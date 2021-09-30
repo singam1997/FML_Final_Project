@@ -16,15 +16,20 @@ In the prediabetic category, 193 samples are present. Out of which 133 are diabe
 9,	140,	94,	0,	0,	32.7,	0.734,	45,	1
 Patient is diabeteic
 9 preg
-140 oral Glucose TT
+140 oral Glucose [Glucode Tolerance Test(GTT)]
 94 Blood pressure
 no info on skin thickness and insulin
 BMI 32.7 hence Obese
-0.734 Diabetes Pedegree Function
+0.734 Diabetes Pedigree Function
 45 age
 
-**BMI**
+**Diabetes Pedigree Function  (DPF)**
+For formula of the function check references, heres what you can conclude looking at DPF
+**BMI**  
 ![image](https://user-images.githubusercontent.com/88259695/135403626-09b78e96-fcc2-44ac-9fab-4fae502d3bd4.png)
 
 REFERENCES:  
 *About Diabetes Pedigree Function on page 2*: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2245318/pdf/procascamc00018-0276.pdf
+
+DEFINITIONS:  
+**Diabetes mellitus (DM)**, commonly known as _just diabetes_, is a group of metabolic disorders characterized by a high blood sugar level over a prolonged period of time. Symptoms often include frequent urination, increased thirst and increased appetite. If left untreated, diabetes can cause many health complications.
