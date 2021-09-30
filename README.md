@@ -13,7 +13,7 @@ Observation: In the data we have all the glucose level is <200mg/dL. 44-199 to b
 As we move closer to 199, more people are diabetic  
 In the prediabetic category, 193 samples are present. Out of which 133 are diabetic i.e. around 68.9%  
 
-9,	140,	94,	0,	0,	32.7,	0.734,	45,	1
+Check this sample: 9,	140,	94,	0,	0,	32.7,	0.734,	45,	1
 Patient is diabeteic
 9 preg
 140 oral Glucose [Glucode Tolerance Test(GTT)]
@@ -24,7 +24,10 @@ BMI 32.7 hence Obese
 45 age
 
 **Diabetes Pedigree Function  (DPF)**
-For formula of the function check references, heres what you can conclude looking at DPF
+For formula of the function check references, heres what you can conclude looking at DPF  
+![image](https://user-images.githubusercontent.com/88259695/135406674-f6406b53-f40d-4a47-80ba-aae90650066c.png)
+  
+  
 **BMI**  
 ![image](https://user-images.githubusercontent.com/88259695/135403626-09b78e96-fcc2-44ac-9fab-4fae502d3bd4.png)
 
