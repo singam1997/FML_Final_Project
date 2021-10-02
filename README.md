@@ -39,3 +39,6 @@ DEFINITIONS:
 
 
 *Oct 1*: Revised mathematical proof of SVM
+*Oct 2*: Insulin 2-Hour serum insulin (mu U/ml)
+Tried PCA, reduced accuracy to 77.9%
+Tried filling 0s, reduced accuracy 
