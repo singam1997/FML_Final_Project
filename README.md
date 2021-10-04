@@ -42,3 +42,6 @@ DEFINITIONS:
 *Oct 2*: Insulin 2-Hour serum insulin (mu U/ml)
 Tried PCA, reduced accuracy to 77.9%
 Tried filling 0s, reduced accuracy 
+*Oct 4*: Since very less test data, accuracies we obtain won't be a correct measure
+If I change the test set I go from 80% to 70%. It could also happen that a technique may give lower accuracy on one test set but does it mean it didnt perform well?
+Soln: Cross Validation
