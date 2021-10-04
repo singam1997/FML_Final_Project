@@ -38,10 +38,10 @@ DEFINITIONS:
 **Diabetes mellitus (DM)**, commonly known as _just diabetes_, is a group of metabolic disorders characterized by a high blood sugar level over a prolonged period of time. Symptoms often include frequent urination, increased thirst and increased appetite. If left untreated, diabetes can cause many health complications.
 
 
-*Oct 1*: Revised mathematical proof of SVM
-*Oct 2*: Insulin 2-Hour serum insulin (mu U/ml)
-Tried PCA, reduced accuracy to 77.9%
-Tried filling 0s, reduced accuracy 
-*Oct 4*: Since very less test data, accuracies we obtain won't be a correct measure
-If I change the test set I go from 80% to 70%. It could also happen that a technique may give lower accuracy on one test set but does it mean it didnt perform well?
+*Oct 1*: Revised mathematical proof of SVM  
+*Oct 2*: Insulin 2-Hour serum insulin (mu U/ml)  
+Tried PCA, reduced accuracy to 77.9%  
+Tried filling 0s, reduced accuracy    
+*Oct 4*: Since very less test data, accuracies we obtain won't be a correct measure  
+If I change the test set I go from 80% to 70%. It could also happen that a technique may give lower accuracy on one test set but does it mean it didnt perform well?   
 Soln: Cross Validation
