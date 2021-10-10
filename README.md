@@ -46,3 +46,16 @@ Tried filling 0s, reduced accuracy
 If I change the test set I go from 80% to 70%. It could also happen that a technique may give lower accuracy on one test set but does it mean it didnt perform well?   
 Soln: Cross Validation
 It turns out that there are some techniques to handle imbalance
+Those are: upsampling,downsampling(no way we can afford it), synthesis technique(SNORT) and class balancing
+
+Class balancing used :)
+
+Accuracy is not a correct measure, Instead use precision recall
+Problem of higher false positives
+
+Tuning the hyper parameters c and gamma
+One of the good ones: check in notebook
+SNORT can be used for upsampling
+
+Preprocessing isn't straight forward because of the time duration between initial tests and final results
+Grid Search incorporates cross validation (5 fold)
