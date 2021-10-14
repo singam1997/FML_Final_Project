@@ -64,3 +64,7 @@ Grid Search incorporates cross validation (5 fold)
 
 Imputation can be used for handling missing values:
 https://scikit-learn.org/stable/modules/impute.html
+
+
+What are the most important features?-Feature Selection:
+https://scikit-learn.org/stable/modules/feature_selection.html
