@@ -60,3 +60,7 @@ SNORT can be used for upsampling
 Preprocessing isn't straight forward because of the time duration between initial tests and final results
 Grid Search incorporates cross validation (5 fold)
 ![image](https://user-images.githubusercontent.com/88259695/136698194-021a97d4-7ccd-4761-85b5-2cba041be00d.png)
+
+
+Imputation can be used for handling missing values:
+https://scikit-learn.org/stable/modules/impute.html
