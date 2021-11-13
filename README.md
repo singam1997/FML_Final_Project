@@ -106,20 +106,15 @@ Tried PCA-Did not work for feature reduction in SVM
 Two least important features (after checking the weights and re running SVM):
 Blood Pressure and Skin Thickness
 
-Applying Genetic Algo for feature selection for 400 generations shows following as importnat features:
+Applying Genetic Algo for feature selection for 400 generations shows following as important features:
 Glucose, SkinThickness and 	DiabetesPedigreeFunction
 Report of Genetic Algorithm:
 ![image](https://user-images.githubusercontent.com/88259695/141613908-02961999-8e62-4c62-8a4e-7487a11336ee.png)
 ![image](https://user-images.githubusercontent.com/88259695/141613913-a42f11e3-8fa1-4875-8b06-96100533e0c0.png)
 
 
-**IGNORE THE PART BELOW, NEED TO DO A BETTER ABLATION STUDY**
 
 Both the above analysis focuses on accuracy. But here Precision of 1 is really important(that is number of false positives)
-With an ablation study, the most important featues that contibute to 1-precision are: Glucose,SkinThickness,DiabetesPedigreeFunction,Age[Accuracy:0.748320714424384 precision1:0.804347826086956]
+With an ablation study, the most important features that contibute to 1-precision are: Glucose,SkinThickness,DiabetesPedigreeFunction,Age[Accuracy:0.748320714424384 precision1:0.804347826086956]
 
 and most imp features that contributes to accuracy are: Glucose,BloodPressure,BMI,DiabetesPedigreeFunction [Accuracy: 0.75602795573675 precision1: 0.62962962962963]
-
-
-
-With only Blood Pressure and DiabetesPedegreeFunction on 30% of data
