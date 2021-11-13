@@ -1,8 +1,9 @@
 # FML_Final_Project
 Course Project of FML  
 Heyy :)))  
-Google Colab link: https://colab.research.google.com/drive/1YppdFQ5tSic-qJUKJxPRhN5O2WLyIFbS?usp=sharing  
-  
+Google Colab link: 
+Old Work:  https://colab.research.google.com/drive/1YppdFQ5tSic-qJUKJxPRhN5O2WLyIFbS?usp=sharing  
+NewerWork: https://colab.research.google.com/drive/1DVwwpiyC1_cdYXplNxlevWdaO65LhWaw?usp=sharing (USE IITB LOGIN)
 LOG:
 
 *Sep 29*: Trying Linear SVC(Support Vector Classifier) with l1 on unprocessed data: Gets 80% accuracy :)
@@ -116,3 +117,5 @@ Report of Genetic Algorithm:
 With an ablation study, the most important features that contibute to 1-precision and a good accuracy are: Glucose,SkinThickness,DiabetesPedigreeFunction,Age[Accuracy:0.748320714424384 precision1:0.804347826086956]
 ![image](https://user-images.githubusercontent.com/88259695/141643167-ee079edb-1247-4b48-b34a-7faffc0fad1b.png)
 
+Next:
+Make a final Code that will work on the limited set of features and can accept any of these inputs and produce the output
