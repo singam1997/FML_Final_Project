@@ -108,7 +108,10 @@ Two least important features (after checking the weights and re running SVM):
 Blood Pressure and Skin Thickness
 
 Applying Genetic Algo for feature selection for 400 generations shows following as important features:
-Glucose, SkinThickness and 	DiabetesPedigreeFunction
+Glucose, SkinThickness and 	DiabetesPedigreeFunction  
+For results: https://www.kaggle.com/sakharam/genetic-grid-svm-pima/notebook (It is a chaos there 😅)
+(scroll down and you will find a list printed saying False True...]  
+
 Report of Genetic Algorithm:
 ![image](https://user-images.githubusercontent.com/88259695/141613908-02961999-8e62-4c62-8a4e-7487a11336ee.png)
 ![image](https://user-images.githubusercontent.com/88259695/141613913-a42f11e3-8fa1-4875-8b06-96100533e0c0.png)
