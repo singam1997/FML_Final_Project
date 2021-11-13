@@ -104,8 +104,8 @@ SVC(C=1000, break_ties=False, cache_size=100000, class_weight='balanced',
 
 Tried PCA-Did not work for feature reduction in SVM
 
-Two least important features (after checking the weights and re running SVM):
-Blood Pressure and Skin Thickness
+The least important feature (after checking the weights and re running SVM):
+Blood Pressure
 
 Applying Genetic Algo for feature selection for 400 generations shows following as important features:
 Glucose, SkinThickness and 	DiabetesPedigreeFunction  
