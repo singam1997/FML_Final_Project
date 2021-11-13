@@ -68,3 +68,55 @@ https://scikit-learn.org/stable/modules/impute.html
 
 What are the most important features?-Feature Selection:
 https://scikit-learn.org/stable/modules/feature_selection.html
+
+
+Following Preprocessing is done:
+1) Univariate Imputation (Tried MultiVariate made th)
+2) Outliers Removed
+3) Scaling
+
+
+Correlation of features:
+![image](https://user-images.githubusercontent.com/88259695/141613718-1a342507-3794-4b83-9f36-3afec1929e22.png)
+
+
+Results(with all features):
+
+**Report On 10% of data:**
+Hyper-parameters:
+clf=svm.SVC(C=1000, break_ties=False, cache_size=100000, class_weight='balanced',
+    coef0=0.0, decision_function_shape='ovr', degree=3, gamma=0.001,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)
+    
+![image](https://user-images.githubusercontent.com/88259695/141613775-915d8744-9ffd-4b9f-8d11-ecab38bf0041.png)
+
+**Report On 30% of data**
+Hyper-parameters:
+SVC(C=1000, break_ties=False, cache_size=100000, class_weight='balanced',
+    coef0=0.0, decision_function_shape='ovr', degree=3, gamma=0.0001,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)
+
+![image](https://user-images.githubusercontent.com/88259695/141614028-a891c282-ea12-4ad5-825e-4084d9d9376d.png)
+
+
+Tried PCA-Did not work for feature reduction in SVM
+
+Two least important features (after checking the weights and re running SVM):
+Blood Pressure and Skin Thickness
+
+Applying Genetic Algo for feature selection for 400 generations shows following as importnat features:
+Glucose, SkinThickness and 	DiabetesPedigreeFunction
+Report of Genetic Algorithm:
+![image](https://user-images.githubusercontent.com/88259695/141613908-02961999-8e62-4c62-8a4e-7487a11336ee.png)
+![image](https://user-images.githubusercontent.com/88259695/141613913-a42f11e3-8fa1-4875-8b06-96100533e0c0.png)
+
+
+**IGNORE THE PART BELOW, NEED TO DO A BETTER ABLATION STUDY**
+
+Both the above analysis focuses on accuracy. But here Precision of 1 is really important(that is number of false positives)
+With an ablation study, the most important featues that contibute to 1-precision are: Blood Pressure and DiabetesPedegreeFunction
+and most imp features that contributes to accuracy are: Glucose,DiabetesPedigreeFunction,Age
+
+With only Blood Pressure and DiabetesPedegreeFunction on 30% of data
