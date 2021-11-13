@@ -116,5 +116,11 @@ Report of Genetic Algorithm:
 
 Both the above analysis focuses on accuracy. But here Precision of 1 is really important(that is number of false positives)
 With an ablation study, the most important features that contibute to 1-precision are: Glucose,SkinThickness,DiabetesPedigreeFunction,Age[Accuracy:0.748320714424384 precision1:0.804347826086956]
+![image](https://user-images.githubusercontent.com/88259695/141643167-ee079edb-1247-4b48-b34a-7faffc0fad1b.png)
+
+
 
 and most imp features that contributes to accuracy are: Glucose,BloodPressure,BMI,DiabetesPedigreeFunction [Accuracy: 0.75602795573675 precision1: 0.62962962962963]
+![image](https://user-images.githubusercontent.com/88259695/141643150-9d53449a-3cbc-40f5-a027-c2b7d732e568.png)
+
+![image](https://user-images.githubusercontent.com/88259695/141643109-26e1f309-205d-4a9c-a437-96d1980fe5c4.png)
