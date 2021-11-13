@@ -21,6 +21,39 @@ from sklearn.decomposition import PCA
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
+#LDA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+#AdaBoost
+from sklearn.ensemble import AdaBoostClassifier
+
+def ada_boost(file_name):
+    df = pd.read_csv("diabetes.csv")
+    Y = df["Outcome"].to_frame()
+    X = df.drop("Outcome", axis=1)
+    gnb = GaussianNB()
+    clf = AdaBoostClassifier(base_estimator=GaussianNB(),n_estimators=1, random_state=0)
+    # clf.fit(X,Y)
+    clf.fit(np.array(X),np.array(Y).flatten())
+    print(clf.score(np.array(X),np.array(Y).flatten()))
+
+def see_LDA(file_name):
+    
+    df = pd.read_csv("diabetes.csv")
+    Y = df["Outcome"].to_frame()
+    X = df.drop("Outcome",axis=1)
+
+    clf = LinearDiscriminantAnalysis()
+    clf.fit(np.array(X), np.array(Y).flatten())
+    
+    one_x = clf.transform(np.array(X)).flatten()[np.array(Y).flatten()==1]
+    zero_x = clf.transform(np.array(X)).flatten()[np.array(Y).flatten()==0]
+
+    plt.plot(list(zero_x),np.zeros_like(zero_x)+1,'x')
+    plt.plot(list(one_x),np.zeros_like(one_x)+2,'^')
+    plt.show()
+
+
 def PCA_old_pro(file_name, components):
     df = pd.read_csv(file_name)
     # print("NULL Values",df.isnull().sum())
@@ -132,19 +165,19 @@ def plot_PCA_data(file_name):
 
 
 def no_pre_processing(file_name):
-	df = pd.read_csv(file_name)
+    df = pd.read_csv(file_name)
     
-	train, test = train_test_split(df, test_size=0.2)
+    train, test = train_test_split(df, test_size=0.2)
 
     # print(type(train),type(test))
 
-	train_Y = train["Outcome"].to_frame()
-	train_X = train.drop("Outcome",axis=1)
+    train_Y = train["Outcome"].to_frame()
+    train_X = train.drop("Outcome",axis=1)
 
-	test_Y = test["Outcome"].to_frame()
-	test_X = test.drop("Outcome",axis=1)
+    test_Y = test["Outcome"].to_frame()
+    test_X = test.drop("Outcome",axis=1)
 
-	return train_X.values, train_Y.values.flatten(), test_X.values, test_Y.values.flatten()
+    return train_X.values, train_Y.values.flatten(), test_X.values, test_Y.values.flatten()
 
 def read_data(file_name):
     df = pd.read_csv(file_name)
@@ -222,4 +255,7 @@ def train_data(train_X, train_Y, test_X, test_Y):
 # train_X, train_Y, test_X, test_Y = PCA_old_pro("diabetes.csv",int(sys.argv[1]))
 # train_data(train_X, train_Y, test_X, test_Y)
 
-plot_PCA_data("diabetes.csv")
+# plot_PCA_data("diabetes.csv")
+
+# see_LDA("diabetes.csv")
+ada_boost("diabetes.csv")
