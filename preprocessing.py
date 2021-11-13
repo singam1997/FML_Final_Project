@@ -17,6 +17,9 @@ from sklearn.model_selection import cross_val_score
 #  PCA
 from sklearn.decomposition import PCA
 
+#plotting
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
 def PCA_old_pro(file_name, components):
     df = pd.read_csv(file_name)
@@ -91,6 +94,41 @@ def PCA_pre_pro(file_name, components):
     test_X_np = pca.transform(test_X_np)
 
     return train_X_np, train_Y.values.flatten(), test_X_np, test_Y.values.flatten()
+
+def plot_PCA_data(file_name):
+    df = pd.read_csv(file_name)
+    
+    
+    train_Y = df["Outcome"].to_frame()
+    train_X = df.drop("Outcome",axis=1)
+    # train_X = preprocessing.scale(train_X)
+
+    pca = PCA(n_components=3)
+    train_X_np = np.array(train_X)
+    train_X_np = (train_X_np-train_X_np.mean())/train_X_np.std()
+    train_X_np = pca.fit_transform(train_X_np)
+    z_vals = train_X_np[np.array(train_Y==0).flatten()]
+    y_vals = train_X_np[np.array(train_Y==1).flatten()]
+    
+    z_x_vals = list(z_vals[:,0])
+    z_y_vals = list(z_vals[:,1])
+    z_z_vals = list(z_vals[:,2])
+
+    y_x_vals = list(y_vals[:,0])
+    y_y_vals = list(y_vals[:,1])
+    y_z_vals = list(y_vals[:,2])
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    ax.scatter(z_x_vals, z_y_vals, z_z_vals, c='r', marker='o')
+    ax.scatter(y_x_vals, y_y_vals, y_z_vals, c='b', marker='^')
+
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+
+    plt.show()
 
 
 def no_pre_processing(file_name):
@@ -181,5 +219,7 @@ def train_data(train_X, train_Y, test_X, test_Y):
 # train_data(train_X, train_Y, test_X, test_Y)
 
 # PCA_old_pro
-train_X, train_Y, test_X, test_Y = PCA_old_pro("diabetes.csv",int(sys.argv[1]))
-train_data(train_X, train_Y, test_X, test_Y)
+# train_X, train_Y, test_X, test_Y = PCA_old_pro("diabetes.csv",int(sys.argv[1]))
+# train_data(train_X, train_Y, test_X, test_Y)
+
+plot_PCA_data("diabetes.csv")
