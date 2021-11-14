@@ -173,6 +173,18 @@ XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
 ![image](https://user-images.githubusercontent.com/88259695/141667543-ab11b904-555e-4450-b128-7e1160f8b66f.png)
 ![image](https://user-images.githubusercontent.com/88259695/141667555-7095ec39-ca79-490d-aa9b-4a02af2f86d2.png)
 
+PCA(n=6)+XBoost and 7:3 split
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+              colsample_bynode=1, colsample_bytree=1, gamma=1.5,
+              learning_rate=0.1, max_delta_step=0, max_depth=5,
+              min_child_weight=5, missing=None, n_estimators=100, n_jobs=1,
+              nthread=None, objective='binary:logistic', random_state=0,
+              reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+              silent=None, subsample=1, verbosity=1)
+
+![image](https://user-images.githubusercontent.com/88259695/141667728-ff73155f-7f67-411e-b8f4-6271fe35c2ea.png)
+
+![image](https://user-images.githubusercontent.com/88259695/141667734-925535d9-e926-4a54-81b8-d5bc5232873d.png)
 
 Next:
 Make a final Code that will work on the limited set of features and can accept any of these inputs and produce the output
