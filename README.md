@@ -151,6 +151,27 @@ Results:
 
 
 Ensembling: XGBoosting
+On less feat, hyperparam:
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+              colsample_bynode=1, colsample_bytree=1, gamma=10,
+              learning_rate=0.1, max_delta_step=0, max_depth=5,
+              min_child_weight=1, missing=None, n_estimators=100, n_jobs=1,
+              nthread=None, objective='binary:logistic', random_state=0,
+              reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+              silent=None, subsample=1, verbosity=1)
+Results:![image](https://user-images.githubusercontent.com/88259695/141667487-b52f405c-8357-4069-8c73-6dff6ba2c14d.png)
+
+
+On all feat, hperparam:
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+              colsample_bynode=1, colsample_bytree=1, gamma=1.5,
+              learning_rate=0.1, max_delta_step=0, max_depth=5,
+              min_child_weight=5, missing=None, n_estimators=100, n_jobs=1,
+              nthread=None, objective='binary:logistic', random_state=0,
+              reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+              silent=None, subsample=1, verbosity=1)
+![image](https://user-images.githubusercontent.com/88259695/141667543-ab11b904-555e-4450-b128-7e1160f8b66f.png)
+![image](https://user-images.githubusercontent.com/88259695/141667555-7095ec39-ca79-490d-aa9b-4a02af2f86d2.png)
 
 
 Next:
