@@ -135,6 +135,23 @@ GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
                           
 ![image](https://user-images.githubusercontent.com/88259695/141666914-fe9c719d-50e0-426d-9a2f-8a357dde5c55.png)
 
+For Glucose, SkinThickness,Pedegree,Age, following are hyperparameters:
+GradientBoostingClassifier(ccp_alpha=0.0, criterion='friedman_mse', init=None,
+                           learning_rate=0.1, loss='deviance', max_depth=1,
+                           max_features=None, max_leaf_nodes=None,
+                           min_impurity_decrease=0.0, min_impurity_split=None,
+                           min_samples_leaf=1, min_samples_split=2,
+                           min_weight_fraction_leaf=0.0, n_estimators=100,
+                           n_iter_no_change=None, presort='deprecated',
+                           random_state=0, subsample=1.0, tol=0.0001,
+                           validation_fraction=0.1, verbose=0,
+                           warm_start=False)
+Results:
+![image](https://user-images.githubusercontent.com/88259695/141667338-430999a2-5d06-4469-a04c-60b3de9fe7cd.png)
+
+
+Ensembling: XGBoosting
+
 
 Next:
 Make a final Code that will work on the limited set of features and can accept any of these inputs and produce the output
