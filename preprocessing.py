@@ -44,7 +44,6 @@ def plot_X_Y(X,Y, name):
 
     plt.show()
 
-
 def ada_boost(X,Y,estimators):
     gnb = GaussianNB()
     clf = AdaBoostClassifier(base_estimator=GaussianNB(),n_estimators=estimators, random_state=0)
@@ -64,7 +63,6 @@ def see_LDA(X,Y):
     plt.plot(list(zero_x),np.zeros_like(zero_x)+1,'x')
     plt.plot(list(one_x),np.zeros_like(one_x)+2,'^')
     plt.show()
-
 
 def PCA_train(train_X,train_Y,test_X,test_Y, components):
     ##TRANSFORM TO A LOW DIMENSIONAL SUBSPACE USING PCA
@@ -131,8 +129,42 @@ def read_raw_data(file_name):
     
     Y = df["Outcome"].to_frame()
     X = df.drop("Outcome",axis=1)
+    
+    for i in ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']:
+        X[i] = X[i].replace(0,np.nan).fillna(value=X[i].mean())
 
     return X.values, Y.values.flatten()
+
+def feature_scaling(X,Y,params=[],num=0):
+    
+    if params==[]:
+        mean = np.mean(X,axis=0)
+        std = np.std(X,axis=0)
+        min_val = np.min(X,axis=0)
+        max_val = np.max(X,axis=0)
+    
+    else:
+        num = params[0]
+
+        mean = params[1]
+        std = params[2]
+        
+        min_val = params[1]
+        max_val = params[2]
+        
+    if num==0:
+        X_new = (X-mean)/std
+        params = [0,mean,std]
+    
+    if num==1:
+        X_new = (X-min_val)/(max_val-min_val)
+        params = [1,min_val,max_val]
+    
+    if num==2:
+        X_new = (X-min_val)
+        params = [2,min_val,std]
+    
+    return X_new, Y, params    
 
 def rem_outliers(X,Y):
     cols = X.shape[1]
@@ -140,6 +172,7 @@ def rem_outliers(X,Y):
     # outlier_indices = []
     for i in range(0,X.shape[1]):
         # print(X[:,i])
+        # print(i)
         Q1 = np.quantile(X[:,i],0.25)
         Q3 = np.quantile(X[:,i],0.75)
         IQR = Q3 - Q1
@@ -156,16 +189,13 @@ def rem_outliers(X,Y):
     return X_new,Y_new
 
 def train_data(train_X, train_Y, test_X, test_Y):
-    # print()
-    # print()
-    # print()
-    # print()
+
     gnb = GaussianNB()
     y_pred = gnb.fit(train_X, train_Y).predict(test_X)
     # print("ACCURACY=",(test_Y==y_pred).sum()/test_Y.shape[0])
-    # print("Accuracy=", gnb.score(test_X,test_Y))
+    print("GNB Accuracy=", gnb.score(test_X,test_Y))
     
-    print(gnb.score(test_X,test_Y))
+    # print(gnb.score(test_X,test_Y))
 
     # print("balanced_accuracy_score:",balanced_accuracy_score(test_Y, y_pred))
     # print("RECALL:",recall_score(test_Y, y_pred))
@@ -175,31 +205,70 @@ def train_data(train_X, train_Y, test_X, test_Y):
     # print("%0.2f accuracy with a standard deviation of %0.2f" % (scores.mean(), scores.std()))
 
 
+
+
+"""PASTE INTO TERMINAL
+
+import sys
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+
+df = pd.read_csv("diabetes.csv")
+
+Y = df["Outcome"].to_frame()
+X = df.drop("Outcome",axis=1)
+
+for i in ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']:
+        X[i] = X[i].replace(0,np.nan).fillna(value=X[i].mean())
+
+x = X.values
+y = Y.values.flatten()
+"""
+
+
 if __name__=="__main__":
     X,Y = read_raw_data("diabetes.csv")
-    print(X.shape)
-    print(Y.shape)
+    print("Before removing outliers shape:", X.shape,Y.shape)
     X,Y = rem_outliers(X,Y)
-    print(X.shape)
-    print(Y.shape)
+    
+    print("After removing outliers shape:", X.shape,Y.shape)
+    
     train_X, train_Y, test_X, test_Y = split_data(X,Y)
-    print(train_X.shape, train_Y.shape, test_X.shape, test_Y.shape)
-    # train_data(train_X, train_Y, test_X, test_Y)
+    
+    print("Training and testing shape:",train_X.shape, train_Y.shape, test_X.shape, test_Y.shape)
+    train_X, train_Y, params = feature_scaling(train_X, train_Y,[],1)
+    test_X, test_Y, params = feature_scaling(train_X, train_Y,params,1)
+    print()
+    train_data(train_X, train_Y, test_X, test_Y)
+    
     # plot_PCA_data(train_X, train_Y)
     # plot_PCA_data(test_X, test_Y)
     
-    # train_X, train_Y, test_X, test_Y = PCA_train(train_X, train_Y, test_X, test_Y, 3)
+    # PCA_COMP = 3
+    # train_X, train_Y, test_X, test_Y = PCA_train(train_X, train_Y, test_X, test_Y, PCA_COMP)
+    # print("AFTER PCA:")
     # print(train_X.shape, train_Y.shape, test_X.shape, test_Y.shape)
+    # train_data(train_X, train_Y, test_X, test_Y)
+    
     # see_LDA(train_X, train_Y)
     # see_LDA(test_X, test_Y)
+    
+
     plot_X = []
     plot_Y = []
-    for i in range(1,100):
+    for i in range(1,50):
         # print(i,end="--")
         # ada_boost(train_X,train_Y,i)
         plot_X.append(i)
         plot_Y.append(ada_boost(train_X, train_Y,i))
-    plot_X_Y(plot_X, plot_Y, "PLOT")
+    # plot_X_Y(plot_X, plot_Y, "PLOT")
+    print("Max AdaBoost Acc:",max(plot_Y))
+
 # train_X, train_Y, test_X, test_Y = rem_outliers("diabetes.csv")
 # train_data(train_X, train_Y, test_X, test_Y)
 
