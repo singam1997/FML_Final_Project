@@ -30,3 +30,5 @@ After performing PCA, the accuracy remains almost the same (on all possible PCA 
 Maximum accuracy reported on adaboost is also 80%
 
 Feature Scaling: Unexpectedly the accuracy seems to drop after mean normalization, standardization and shifting of origin, on GNB to 68%-75%. But accuracy on AdaBoost remains similar to without feature scaling.
+
+Two plots here: The one with the feature scaling has highest accuracy 76% when there is only one weak learner :(. The one without feature scaling has highest accuracy of 77% when there is only one weak learner i.e. the GNB :( in the adaboost. The plot also seems to oscillate after some threshold of weak learners :?
