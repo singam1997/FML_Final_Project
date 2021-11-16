@@ -27,22 +27,34 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 #AdaBoost
 from sklearn.ensemble import AdaBoostClassifier
 
-def ada_boost(file_name):
-    df = pd.read_csv("diabetes.csv")
-    Y = df["Outcome"].to_frame()
-    X = df.drop("Outcome", axis=1)
+def plot_X_Y(X,Y, name):
+
+    X_new = list(X)
+    Y_new = list(Y)
+
+    plt.plot(X_new, Y_new, label = name)
+    
+    plt.xlabel('x - axis')
+    
+    plt.ylabel('y - axis')
+    
+    plt.title(name)
+     
+    plt.legend()
+
+    plt.show()
+
+
+def ada_boost(X,Y,estimators):
     gnb = GaussianNB()
-    clf = AdaBoostClassifier(base_estimator=GaussianNB(),n_estimators=1, random_state=0)
+    clf = AdaBoostClassifier(base_estimator=GaussianNB(),n_estimators=estimators, random_state=0)
     # clf.fit(X,Y)
     clf.fit(np.array(X),np.array(Y).flatten())
-    print(clf.score(np.array(X),np.array(Y).flatten()))
+    # print("Ada Acc:",clf.score(np.array(X),np.array(Y).flatten()))
+    return clf.score(np.array(X),np.array(Y).flatten())
 
-def see_LDA(file_name):
-    
-    df = pd.read_csv("diabetes.csv")
-    Y = df["Outcome"].to_frame()
-    X = df.drop("Outcome",axis=1)
-
+def see_LDA(X,Y):
+    ##PLOT DATA AFTER LDA TRANSFORMATION
     clf = LinearDiscriminantAnalysis()
     clf.fit(np.array(X), np.array(Y).flatten())
     
@@ -54,94 +66,23 @@ def see_LDA(file_name):
     plt.show()
 
 
-def PCA_old_pro(file_name, components):
-    df = pd.read_csv(file_name)
-    # print("NULL Values",df.isnull().sum())
-    # print("ISNULL",df.isnull().values.any())
-    # print("TYPES",df.dtypes)
-    # print(df.describe())
-    col_names = list(df.columns)
-    outlier_indices = []
-    for i in col_names:
-        Q1 = np.quantile(df[i],0.25)
-        Q3 = np.quantile(df[i],0.75)
-        IQR = Q3 - Q1
-
-        lower_range = Q1 - 1.5 * IQR
-        upper_range = Q3 + 1.5 * IQR
-        # print(lower_range, upper_range)
-        for j in range(0,(df.shape[0])):
-            if (df[i][j] < lower_range) or (df[i][j] > upper_range):
-                # print("out_ind",outlier_indices)        
-                outlier_indices.append(j)
-        
-        if outlier_indices!=[]:
-            outlier_indices = list(set(outlier_indices))
-    outlier_indices.sort()
-    # print(outlier_indices)
-    # mask = []
-    
-    data_new = df[[i not in outlier_indices for i in range(0,df.shape[0])]]
-    # print(type(data_new))
-    df = data_new
-
-    train, test = train_test_split(df, test_size=0.2)
-
-    # print(type(train),type(test))
-
-    train_Y = train["Outcome"].to_frame()
-    train_X = train.drop("Outcome",axis=1)
-
-    test_Y = test["Outcome"].to_frame()
-    test_X = test.drop("Outcome",axis=1)
-
-    train_X_np = train_X.values
-    test_X_np = test_X.values
-
-    
+def PCA_train(train_X,train_Y,test_X,test_Y, components):
+    ##TRANSFORM TO A LOW DIMENSIONAL SUBSPACE USING PCA
     pca = PCA(n_components=components)
-    
-    train_X_np = pca.fit(train_X_np).transform(train_X_np)
-    test_X_np = pca.transform(test_X_np)
 
-    return train_X_np, train_Y.values.flatten(), test_X_np, test_Y.values.flatten()
+    train_X = pca.fit(train_X).transform(train_X)
+    test_X = pca.transform(test_X)
 
+    return train_X, train_Y, test_X, test_Y
 
-def PCA_pre_pro(file_name, components):
-    df = pd.read_csv(file_name)
-    train, test = train_test_split(df, test_size=0.2)
-    
-    train_Y = train["Outcome"].to_frame()
-    train_X = train.drop("Outcome",axis=1)
-    
-    test_Y = test["Outcome"].to_frame()
-    test_X = test.drop("Outcome",axis=1)
-
-    train_X_np = train_X.values
-    test_X_np = test_X.values
-
-    
-    pca = PCA(n_components=components)
-    
-    train_X_np = pca.fit(train_X_np).transform(train_X_np)
-    test_X_np = pca.transform(test_X_np)
-
-    return train_X_np, train_Y.values.flatten(), test_X_np, test_Y.values.flatten()
-
-def plot_PCA_data(file_name):
-    df = pd.read_csv(file_name)
-    
-    
-    train_Y = df["Outcome"].to_frame()
-    train_X = df.drop("Outcome",axis=1)
-    # train_X = preprocessing.scale(train_X)
-
+def plot_PCA_data(X,Y):
+    ##PLOT 3D PCA WITH REAL X VALUES AND BOOLEAN Y VALUES
     pca = PCA(n_components=3)
-    train_X_np = np.array(train_X)
-    train_X_np = (train_X_np-train_X_np.mean())/train_X_np.std()
-    train_X_np = pca.fit_transform(train_X_np)
-    z_vals = train_X_np[np.array(train_Y==0).flatten()]
-    y_vals = train_X_np[np.array(train_Y==1).flatten()]
+    X = (X-X.mean())/X.std()
+    X = pca.fit_transform(X)
+
+    z_vals = X[np.array(Y==0).flatten()]
+    y_vals = X[np.array(Y==1).flatten()]
     
     z_x_vals = list(z_vals[:,0])
     z_y_vals = list(z_vals[:,1])
@@ -163,64 +104,56 @@ def plot_PCA_data(file_name):
 
     plt.show()
 
-
-def no_pre_processing(file_name):
-    df = pd.read_csv(file_name)
+def split_data(X, Y):
+    df_x = pd.DataFrame(X)
+    df_y = pd.DataFrame(Y)
+    df = pd.concat([df_x,df_y],axis=1)
     
     train, test = train_test_split(df, test_size=0.2)
+    print()
+    
+    train_Y = np.array(train)[:,-1]
+    train_X = np.array(train)[:,:-1]
 
-    # print(type(train),type(test))
+    test_Y = np.array(test)[:,-1]
+    test_X = np.array(test)[:,:-1]
 
-    train_Y = train["Outcome"].to_frame()
-    train_X = train.drop("Outcome",axis=1)
+    return train_X, train_Y, test_X, test_Y
 
-    test_Y = test["Outcome"].to_frame()
-    test_X = test.drop("Outcome",axis=1)
-
-    return train_X.values, train_Y.values.flatten(), test_X.values, test_Y.values.flatten()
-
-def read_data(file_name):
+def read_raw_data(file_name):
     df = pd.read_csv(file_name)
+
     # print("NULL Values",df.isnull().sum())
     # print("ISNULL",df.isnull().values.any())
     # print("TYPES",df.dtypes)
     # print(df.describe())
-    col_names = list(df.columns)
-    outlier_indices = []
-    for i in col_names:
-        Q1 = np.quantile(df[i],0.25)
-        Q3 = np.quantile(df[i],0.75)
+    # col_names = list(df.columns)
+    
+    Y = df["Outcome"].to_frame()
+    X = df.drop("Outcome",axis=1)
+
+    return X.values, Y.values.flatten()
+
+def rem_outliers(X,Y):
+    cols = X.shape[1]
+    mask = np.array([False]*X.shape[0])
+    # outlier_indices = []
+    for i in range(0,X.shape[1]):
+        # print(X[:,i])
+        Q1 = np.quantile(X[:,i],0.25)
+        Q3 = np.quantile(X[:,i],0.75)
         IQR = Q3 - Q1
 
         lower_range = Q1 - 1.5 * IQR
         upper_range = Q3 + 1.5 * IQR
-        # print(lower_range, upper_range)
-        for j in range(0,(df.shape[0])):
-            if (df[i][j] < lower_range) or (df[i][j] > upper_range):
-                # print("out_ind",outlier_indices)        
-                outlier_indices.append(j)
         
-        if outlier_indices!=[]:
-            outlier_indices = list(set(outlier_indices))
-    outlier_indices.sort()
-    # print(outlier_indices)
-    # mask = []
-    
-    data_new = df[[i not in outlier_indices for i in range(0,df.shape[0])]]
-    # print(type(data_new))
-    df = data_new
-
-    train, test = train_test_split(df, test_size=0.2)
-
-    # print(type(train),type(test))
-
-    train_Y = train["Outcome"].to_frame()
-    train_X = train.drop("Outcome",axis=1)
-
-    test_Y = test["Outcome"].to_frame()
-    test_X = test.drop("Outcome",axis=1)
-
-    return train_X.values, train_Y.values.flatten(), test_X.values, test_Y.values.flatten()
+        mask = np.logical_or(X[:,i]<lower_range, mask)
+        mask = np.logical_or(X[:,i]>upper_range, mask)
+        # print(mask.sum())
+        # print(mask)
+    X_new = X[mask==False]
+    Y_new = Y[mask==False]
+    return X_new,Y_new
 
 def train_data(train_X, train_Y, test_X, test_Y):
     # print()
@@ -242,13 +175,38 @@ def train_data(train_X, train_Y, test_X, test_Y):
     # print("%0.2f accuracy with a standard deviation of %0.2f" % (scores.mean(), scores.std()))
 
 
-# train_X, train_Y, test_X, test_Y = read_data("diabetes.csv")
+if __name__=="__main__":
+    X,Y = read_raw_data("diabetes.csv")
+    print(X.shape)
+    print(Y.shape)
+    X,Y = rem_outliers(X,Y)
+    print(X.shape)
+    print(Y.shape)
+    train_X, train_Y, test_X, test_Y = split_data(X,Y)
+    print(train_X.shape, train_Y.shape, test_X.shape, test_Y.shape)
+    # train_data(train_X, train_Y, test_X, test_Y)
+    # plot_PCA_data(train_X, train_Y)
+    # plot_PCA_data(test_X, test_Y)
+    
+    # train_X, train_Y, test_X, test_Y = PCA_train(train_X, train_Y, test_X, test_Y, 3)
+    # print(train_X.shape, train_Y.shape, test_X.shape, test_Y.shape)
+    # see_LDA(train_X, train_Y)
+    # see_LDA(test_X, test_Y)
+    plot_X = []
+    plot_Y = []
+    for i in range(1,100):
+        # print(i,end="--")
+        # ada_boost(train_X,train_Y,i)
+        plot_X.append(i)
+        plot_Y.append(ada_boost(train_X, train_Y,i))
+    plot_X_Y(plot_X, plot_Y, "PLOT")
+# train_X, train_Y, test_X, test_Y = rem_outliers("diabetes.csv")
 # train_data(train_X, train_Y, test_X, test_Y)
 
-# train_X, train_Y, test_X, test_Y = no_pre_processing("diabetes.csv")
+# train_X, train_Y, test_X, test_Y = read_raw_data("diabetes.csv")
 # train_data(train_X, train_Y, test_X, test_Y)
 
-# train_X, train_Y, test_X, test_Y = PCA_pre_pro("diabetes.csv",int(sys.argv[1]))
+# train_X, train_Y, test_X, test_Y = PCA_train("diabetes.csv",int(sys.argv[1]))
 # train_data(train_X, train_Y, test_X, test_Y)
 
 # PCA_old_pro
@@ -258,4 +216,4 @@ def train_data(train_X, train_Y, test_X, test_Y):
 # plot_PCA_data("diabetes.csv")
 
 # see_LDA("diabetes.csv")
-ada_boost("diabetes.csv")
+# ada_boost("diabetes.csv")
