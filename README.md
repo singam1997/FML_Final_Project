@@ -9,3 +9,20 @@ Random Forest
 
 Breaking the curse of small datasets in Machine Learning
 https://towardsdatascience.com/breaking-the-curse-of-small-datasets-in-machine-learning-part-1-36f28b0c044d
+
+## Summary
+
+Training set size : 80%(614 instances) \
+Test set size : 20%(154 instances) 
+
+| Sr. | Preprocessing | Best Decision Tree Model Parameter | Decision Tree Accuracy | Best Random Forest Model Parameter | Random Forest Accuracy |
+| ------------ | ------------ | ------------ | ------------ | ------------ | ------------ |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
+|   |   |   |   |   |   |
