@@ -29,41 +29,6 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 #AdaBoost
 from sklearn.ensemble import AdaBoostClassifier
-def separate_by_class(dataset):
-    separated = dict()
-    for i in range(len(dataset)):
-        vector = dataset[i]
-        class_value = vector[-1]
-        if (class_value not in separated):
-            separated[class_value] = list()
-        separated[class_value].append(vector)
-    return separated
-
-
-
-# separated = dict()
-# separated[0] = list()
-# separated[1] = list()
-
-# list(map(lambda dp: separated[dp[1]].append(dp[0]), list(zip(x, y))))
-
-# class0 = np.vstack(separated[0])
-# class1 = np.vstack(separated[0])
-
-# mean_class0 = np.mean(class0, axis=0)
-# std_class0 = np.std(class0, axis=0)
-
-# mean_class1 = np.mean(class1, axis=0)
-# std_class1 = np.std(class1, axis=0)
-
-
-
-
-
-# for i in range(0,len(train_Y)):
-#     if i==0:
-#         separated[0].append()
-
 
 
 def plot_X_Y(X,Y, name):
@@ -102,14 +67,6 @@ def ada_boost_test_acc_gnb(train_x, train_y, test_x, test_y, estimators):
     # print("Ada Acc:",clf.score(np.array(X),np.array(Y).flatten()))
     return adab.score(np.array(test_x),np.array(test_y).flatten())
     
-
-def ada_boost(X,Y,estimators):
-    # gnb = GaussianNB()
-    clf = AdaBoostClassifier(base_estimator=GaussianNB(),n_estimators=estimators, random_state=0)
-    # clf.fit(X,Y)
-    clf.fit(np.array(X),np.array(Y).flatten())
-    # print("Ada Acc:",clf.score(np.array(X),np.array(Y).flatten()))
-    return clf.score(np.array(X),np.array(Y).flatten())
 
 def see_LDA(X,Y):
     ##PLOT DATA AFTER LDA TRANSFORMATION
@@ -160,40 +117,6 @@ def plot_PCA_data(X,Y):
     ax.set_zlabel('Z Label')
 
     plt.show()
-
-def split_data(X, Y):
-    df_x = pd.DataFrame(X)
-    df_y = pd.DataFrame(Y)
-    df = pd.concat([df_x,df_y],axis=1)
-    # random_n = np.random.randint()
-    # print("Random_State",random_n)
-    train, test = train_test_split(df, test_size=0.2)#,random_state=random_n)
-    print()
-    
-    train_Y = np.array(train)[:,-1]
-    train_X = np.array(train)[:,:-1]
-
-    test_Y = np.array(test)[:,-1]
-    test_X = np.array(test)[:,:-1]
-
-    return train_X, train_Y, test_X, test_Y
-
-def read_raw_data(file_name):
-    df = pd.read_csv(file_name)
-
-    # print("NULL Values",df.isnull().sum())
-    # print("ISNULL",df.isnull().values.any())
-    # print("TYPES",df.dtypes)
-    # print(df.describe())
-    # col_names = list(df.columns)
-    
-    Y = df["Outcome"].to_frame()
-    X = df.drop("Outcome",axis=1)
-    
-    for i in ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']:
-        X[i] = X[i].replace(0,np.nan).fillna(value=round(X[i].mean()))
-
-    return X.values, Y.values.flatten()
 
 def feature_scaling(X,Y,params=[],num=0):
     
@@ -246,6 +169,52 @@ def feature_scaling(X,Y,params=[],num=0):
 
     return X_new, Y, params    
 
+def split_data(X, Y):
+    df_x = pd.DataFrame(X)
+    df_y = pd.DataFrame(Y)
+    df = pd.concat([df_x,df_y],axis=1)
+    # random_n = np.random.randint()
+    # print("Random_State",random_n)
+    train, test = train_test_split(df, test_size=0.2)#,random_state=random_n)
+    # print()
+    
+    train_Y = np.array(train)[:,-1]
+    train_X = np.array(train)[:,:-1]
+
+    test_Y = np.array(test)[:,-1]
+    test_X = np.array(test)[:,:-1]
+
+    return train_X, train_Y, test_X, test_Y
+
+def read_raw_test(file_name, means):
+    df = pd.read_csv(file_name)    
+    Y = df["Outcome"].to_frame()
+    X = df.drop("Outcome",axis=1)
+    
+    for i in ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']:
+        X[i] = X[i].replace(0,np.nan).fillna(value=means[i])
+    # print(X.shape)
+    # print(X.columns)
+    return X.values, Y.values.flatten()
+
+def read_raw_data(file_name):
+    df = pd.read_csv(file_name)    
+    Y = df["Outcome"].to_frame()
+    X = df.drop("Outcome",axis=1)
+    
+    for i in ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']:
+        X[i] = X[i].replace(0,np.nan).fillna(value=(X[i].mean()))
+    means = dict()
+    means['Glucose']=X['Glucose'].mean()
+    means['BloodPressure']=X['BloodPressure'].mean()
+    means['SkinThickness']=X['SkinThickness'].mean()
+    means['Insulin']=X['Insulin'].mean()
+    means['BMI']=X['BMI'].mean()
+
+    return X.values, Y.values.flatten(), means
+
+
+
 def get_outlier_matrix(X,Y):
     cols = X.shape[1]
     outlier_matrix = np.array([[False]*X.shape[1]]*X.shape[0])
@@ -260,30 +229,6 @@ def get_outlier_matrix(X,Y):
         outlier_matrix[:,i] = np.logical_or(X[:,i]>upper_range,outlier_matrix[:,i])
     return outlier_matrix
 
-def rem_outliers(X,Y):
-    cols = X.shape[1]
-    mask = np.array([False]*X.shape[0])
-    # outlier_indices = []
-    for i in range(0,X.shape[1]):
-        # print(X[:,i])
-        # print(i)
-        Q1 = np.quantile(X[:,i],0.25)
-        Q3 = np.quantile(X[:,i],0.75)
-        IQR = Q3 - Q1
-
-        lower_range = Q1 - 1.5 * IQR
-        upper_range = Q3 + 1.5 * IQR
-        
-        mask = np.logical_or(X[:,i]<lower_range, mask)
-        mask = np.logical_or(X[:,i]>upper_range, mask)
-        # print(mask.sum())
-        # print(mask)
-    X_new = X[mask==False]
-    Y_new = Y[mask==False]
-
-    X_outliers = X[mask==True]
-    Y_outliers = Y[mask==True]
-    return X_new,Y_new, X_outliers, Y_outliers
 
 def get_outlier_weights(train_Y, outlier_column, outlier_weight=-1, zero_weight=-1, one_weight=-1):
     z_examples = ((train_Y)==0).sum()
@@ -294,39 +239,45 @@ def get_outlier_weights(train_Y, outlier_column, outlier_weight=-1, zero_weight=
         zero_weight = 1+o_examples/(o_examples+z_examples)
 
     if one_weight==-1:
-        one_weight = 1+2.4*z_examples/(o_examples+z_examples)
+        one_weight = 1+2.26*z_examples/(o_examples+z_examples)
     
     if outlier_weight==-1:
-        outlier_weight=0.3
+        outlier_weight=3
     
     weight_vector[train_Y==0] = zero_weight
     weight_vector[train_Y==1] = one_weight
     weight_vector[outlier_column==True] = outlier_weight
-    print("Weight_vector",weight_vector)
+    # print("Weight_vector",weight_vector)
     return weight_vector
 
+def calc_score(models, test_X, test_Y, categories):
+    log_probs = np.zeros((test_X.shape[0],2))
+    for i in range(0,test_X.shape[1]):
+        
+        test_feature = test_X[:,i].reshape(-1,1)
+        
+        if categories[i]==0:
+            test_feature = np.round(test_feature)
 
-def get_weights(train_X, train_Y):
-    z_examples = ((train_Y)==0).sum()
-    o_examples = ((train_Y)==1).sum()
-    
-    z_weights = o_examples
-    o_weights = z_examples
-    # print("zexamples, o_examples",z_weights, o_weights)
-    z_weights = 3#round(z_examples/100)
-    o_weights = 5#round(o_examples/100)
+        log_probs += models[i].predict_log_proba(test_feature)
 
-    # z_weights = 1+z_weights/(o_examples+z_examples)
-    # o_weights = 1+o_weights/(o_examples+z_examples)
-    # print(z_weights, o_weights)
-    get_weights = np.zeros(train_Y.size)
-    # print(get_weights.shape, get_weights[train_Y==0])
-    get_weights[train_Y==0]=z_weights
-    get_weights[train_Y==1]=o_weights
-    # print(get_weights)
-    return get_weights
+    prediction = []
 
+    for i in log_probs:
+        if i[0] < i[1]:
+            prediction.append(1)
+        else:
+            prediction.append(0)
 
+    y_pred = np.array(prediction)
+    print("---------------------------")
+    print("Awesome_Mix_acc:",(((test_Y==y_pred).sum())/test_Y.shape[0]))
+    # print("balanced_accuracy_score:",balanced_accuracy_score(test_Y, y_pred))
+    print("Awesome_PRECISION:",precision_score(test_Y, y_pred))
+    print("Awesome_RECALL:",recall_score(test_Y, y_pred))
+    # print("precision_recall_fscore_support:",precision_recall_fscore_support(test_Y, y_pred))
+    # print("multilabel_confusion_matrix",multilabel_confusion_matrix(test_Y, y_pred))
+    print("--------------------------")
 
 def awesome_mixture_nb(train_X, train_Y, test_X, test_Y, categories,outliers_matrix = np.array([])):
     ##if categories are 1 predict prob using gaussian distribution
@@ -346,120 +297,28 @@ def awesome_mixture_nb(train_X, train_Y, test_X, test_Y, categories,outliers_mat
             feature_weights = None
 
         if categories[i]==0:
+            # print("I",i)
             models.append(MultinomialNB())
             models[i].fit(train_feature, train_Y, feature_weights)
 
         if categories[i]==1:
+            # print("I",i)
             models.append(GaussianNB())
             models[i].fit(train_feature, train_Y, feature_weights)
 
     ##testing
-    log_probs = np.zeros((test_X.shape[0],2))
-    for i in range(0,test_X.shape[1]):
-        
-        test_feature = test_X[:,i].reshape(-1,1)
-        
-        if categories[i]==0:
-            test_feature = np.round(test_feature)
 
-        log_probs += models[i].predict_log_proba(test_feature)
-
-    # x_categorical = train_X[:,np.array(categories)==0]
-    # x_categorical = np.round(x_categorical)
-
-
-    # x_gaussian = train_X[:,np.array(categories)==1]
-
-
-    # gnb = GaussianNB()
-    # gnb.fit(x_gaussian, train_Y,weights)
-
-    # clf = MultinomialNB()#min_categories=uniq)
-    # clf.fit(x_categorical, train_Y,weights)
-
-    # test_x_categorical = test_X[:,np.array(categories)==0]
-    # test_x_categorical = np.round(test_x_categorical)
-    # test_x_gaussian = test_X[:,np.array(categories)==1]
-
-    # test_x_log_prob_categorical = clf.predict_log_proba(test_x_categorical)
-    # test_x_log_prob_gaussian = gnb.predict_log_proba(test_x_gaussian)
-
-    # log_sum = test_x_log_prob_categorical + test_x_log_prob_gaussian
-    prediction = []
-    # print(log_probs)
-    # exit()
-    for i in log_probs:
-        if i[0] < i[1]:
-            prediction.append(1)
-        else:
-            prediction.append(0)
-
-    y_pred = np.array(prediction)
-    print("---------------------------")
-    print("Awesome_Mix_acc:",(((test_Y==y_pred).sum())/test_Y.shape[0]))
-    # print("balanced_accuracy_score:",balanced_accuracy_score(test_Y, y_pred))
-    print("Awesome_PRECISION:",precision_score(test_Y, y_pred))
-    print("Awesome_RECALL:",recall_score(test_Y, y_pred))
-    # print("precision_recall_fscore_support:",precision_recall_fscore_support(test_Y, y_pred))
-    # print("multilabel_confusion_matrix",multilabel_confusion_matrix(test_Y, y_pred))
-    print("--------------------------")
-
-
-def mixture_nb(train_X, train_Y, test_X, test_Y, categories,outliers_X=np.array([]), outliers_Y=np.array([])):
-    ##if categories are 1 predict prob using gaussian distribution
-    ##if categories are 0 predict prop using categorical
-    x_categorical = train_X[:,np.array(categories)==0]
-    x_categorical = np.round(x_categorical)
-
-    # x_outlier_categorical = np.round(outliers_X[:,np.array(categories)==0])
-
-
-    x_gaussian = train_X[:,np.array(categories)==1]
-
-    # uniq = [round(max(np.concatenate((outliers_X,train_X,test_X))[:,i])+1) for i in range(0,train_X.shape[1])]
-    # uniq = list(np.array(uniq)[np.array(categories)==0])
-    weights = get_weights(train_X, train_Y)
-    
-
-    gnb = GaussianNB()
-    gnb.fit(x_gaussian, train_Y,weights)
-
-    clf = MultinomialNB()#min_categories=uniq)
-    clf.fit(x_categorical, train_Y,weights)
-
-    test_x_categorical = test_X[:,np.array(categories)==0]
-    test_x_categorical = np.round(test_x_categorical)
-    test_x_gaussian = test_X[:,np.array(categories)==1]
-
-    test_x_log_prob_categorical = clf.predict_log_proba(test_x_categorical)
-    test_x_log_prob_gaussian = gnb.predict_log_proba(test_x_gaussian)
-
-    log_sum = test_x_log_prob_categorical + test_x_log_prob_gaussian
-    prediction = []
-
-    for i in log_sum:
-        if i[0] < i[1]:
-            prediction.append(1)
-        else:
-            prediction.append(0)
-
-    y_pred = np.array(prediction)
-    print("---------------------------")
-    print("Mix_acc:",(((test_Y==y_pred).sum())/test_Y.shape[0]))
-    # print("balanced_accuracy_score:",balanced_accuracy_score(test_Y, y_pred))
-    print("PRECISION:",precision_score(test_Y, y_pred))
-    print("RECALL:",recall_score(test_Y, y_pred))
-    # print("precision_recall_fscore_support:",precision_recall_fscore_support(test_Y, y_pred))
-    # print("multilabel_confusion_matrix",multilabel_confusion_matrix(test_Y, y_pred))
-    print("--------------------------")
+    calc_score(models, test_X, test_Y,categories)
+    # print("MODEL SIZE", len(models),len(categories),train_X.shape[1],categories)
+    return models
 
 def train_categoNB(train_X, train_Y, test_X, test_Y):
     # uniq = [np.unique(np.concatenate((train_X,test_X))[:,i]).size for i in range(0,6)]
     uniq = [round(max(np.concatenate((train_X,test_X))[:,i])+1) for i in range(0,6)]
     # print(uniq)
     clf = CategoricalNB(min_categories=uniq)
-    weights = get_weights(train_X, train_Y)
-    clf.fit(train_X, train_Y,weights)
+    # weights = get_weights(train_X, train_Y)
+    clf.fit(train_X, train_Y)#,weights)
     # print(clf.n_categories_)
     # print([max(np.concatenate((train_X,test_X))[:,i])+1 for i in range(0,6)])
     y_pred = clf.predict(test_X)
@@ -468,15 +327,15 @@ def train_categoNB(train_X, train_Y, test_X, test_Y):
 
 def train_ComplementNB(train_X, train_Y, test_X, test_Y):
     clf = ComplementNB()
-    weights = get_weights(train_X, train_Y)
-    clf.fit(train_X, train_Y,weights)
+    # weights = get_weights(train_X, train_Y)
+    clf.fit(train_X, train_Y)#,weights)
     y_pred = clf.predict(test_X)
     print("ComplementNB Accuracy=", clf.score(test_X,test_Y))
 
 def train_multi_nb(train_X, train_Y, test_X, test_Y):
     clf = MultinomialNB()
-    weights = get_weights(train_X, train_Y)
-    clf.fit(train_X, train_Y,weights)
+    # weights = get_weights(train_X, train_Y)
+    clf.fit(train_X, train_Y)#,weights)
     y_pred = clf.predict(test_X)
     print("MultinomialNB Accuracy=", clf.score(test_X,test_Y))
 
@@ -548,29 +407,32 @@ categories = [0,0,0,0,0,1,1,0]
 
 
 if __name__=="__main__":
-    X,Y = read_raw_data("diabetes.csv")
-    print("Before removing outliers shape:", X.shape,Y.shape)
-        
-    
+    X,Y,means = read_raw_data("diabetes_training.csv")
     
     train_X, train_Y, test_X, test_Y = split_data(X,Y)
     print("Training and testing shape:",train_X.shape, train_Y.shape, test_X.shape, test_Y.shape)
     
     # train_X,train_Y,outliers_X, outliers_Y = rem_outliers(train_X,train_Y)
-    print("After removing outliers shape:", train_X.shape,train_Y.shape)
+    # print("After removing outliers shape:", train_X.shape,train_Y.shape)
     
+    # train_X, train_Y, params = feature_scaling(train_X, train_Y,[],3)
+    # test_X, test_Y, params = feature_scaling(test_X, test_Y,params,3)
+    # print(train_X.shape, test_X.shape)
+    
+
     outlier_matrix = get_outlier_matrix(train_X, train_Y)
-    awesome_mixture_nb(train_X, train_Y, test_X, test_Y, [0,1,0,0,1,1,1,0], outlier_matrix)
-    # train_data(train_X, train_Y, test_X, test_Y)
-    # mixture_nb(train_X, train_Y, test_X, test_Y, [0,1,0,0,1,1,1,0])
+    categories = [0,1,0,0,1,1,1,0]
+    models = awesome_mixture_nb(train_X, train_Y, test_X, test_Y, categories, outlier_matrix)
+    real_test_x, real_test_y = read_raw_test("diabetes_testing.csv",means)
+    # print(len(models), real_test_x.shape, real_test_y.shape, len(categories))
+    print()
+    print("ON UNSEEN DATA")
+    calc_score(models, real_test_x, real_test_y, categories)
+
     
-    train_X, train_Y, params = feature_scaling(train_X, train_Y,[],3)
-    test_X, test_Y, params = feature_scaling(test_X, test_Y,params,3)
-    print(train_X.shape, test_X.shape)
-    
-    train_categoNB(train_X, train_Y, test_X, test_Y)
-    train_multi_nb(train_X, train_Y, test_X, test_Y)
-    train_ComplementNB(train_X, train_Y, test_X, test_Y)
+    # train_categoNB(train_X, train_Y, test_X, test_Y)
+    # train_multi_nb(train_X, train_Y, test_X, test_Y)
+    # train_ComplementNB(train_X, train_Y, test_X, test_Y)
     # plot_PCA_data(train_X, train_Y)
     # plot_PCA_data(test_X, test_Y)
     
