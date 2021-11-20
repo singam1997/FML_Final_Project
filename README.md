@@ -66,16 +66,22 @@ BTW I have uploaded test data here! USE THIS TO GET THE ACCURACY, RECALL, PRECIS
 
 best scores recorded on naive bayes:
 on dev set
+
 ---------------------------
+
 Awesome_Mix_acc: 0.8091603053435115
 Awesome_PRECISION: 0.7555555555555555
 Awesome_RECALL: 0.7083333333333334
+
 --------------------------
 
 ON UNSEEN TEST DATA
+
 ---------------------------
+
 Awesome_Mix_acc: 0.8362068965517241
 Awesome_PRECISION: 0.75
 Awesome_RECALL: 0.7297297297297297
+
 --------------------------
 
