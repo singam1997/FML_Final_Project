@@ -14,7 +14,7 @@ Github Link: https://github.com/singam1997/FML_Final_Project
 	
 	https://www.kaggle.com/mehmettuzcu/diabetes-prediction-with-logistic-regression
 
-**LOGISTIC and K Means Clustering**
+**SVM and K Means Clustering**
 *Running the code on linux*
 
 	python3 svm_and_k_means_clustering.py
