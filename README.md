@@ -13,7 +13,23 @@ Course Project of FML
 *Code Reference*
 	
 	https://www.kaggle.com/mehmettuzcu/diabetes-prediction-with-logistic-regression
-	
+
+**LOGISTIC and K Means Clustering**
+*Running the code on linux*
+
+	python3 svm_and_k_means_clustering.py
+
+Experimentations on SVM and ensembling models(GraidentBoosting and XGBoost)  
+
+https://colab.research.google.com/drive/1DVwwpiyC1_cdYXplNxlevWdaO65LhWaw?usp=sharing
+
+Plots on SVM:
+
+https://colab.research.google.com/drive/1A7yCB8Etlb1in6r1uAUyigV0Nalfohb_?usp=sharing
+
 Visualizing Features:
 
 ![Visualization](https://user-images.githubusercontent.com/88259695/143684572-326ddec2-3cf3-4df5-9b98-3801c39bd50c.jpeg)
+
+
+
